@@ -1,0 +1,12 @@
+# Stage 1: Build the application
+FROM node:9.9.0 as build
+RUN git clone https://github.com/kkenan/basic-microservices.git
+WORKDIR /basic-microservices/node-app/ 
+RUN npm install --silent
+
+# Stage 2: Run the application
+FROM node:9.9.0-alpine
+WORKDIR /app
+COPY --from=build /basic-microservices/node-app  /app
+EXPOSE 8081
+CMD ["node", "index.js"]
