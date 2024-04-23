@@ -4,7 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.springboot
-    environment: 
+    environment:
+      - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
     ports:
@@ -19,9 +20,11 @@ services:
     networks:
       - app-network
 
-  postgres-srv:
+  postgres-db:
     image: postgres:15
+    restart: always
     environment:
+      - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     volumes:
