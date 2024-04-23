@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.springboot
+    depends_on:
+      - node-app
+      - postgres-db
     environment:
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
