@@ -39,7 +39,34 @@ This section details how to build Docker images for your Node.js (`node-app`) an
 After running the build commands, use the following command to verify that the images have been created:
 
 ```bash
+
+
 docker image ls
 
 
+export DB_PASSWORD=test
+export DB_USER=test
+export DB_NAME=test
 
+$ sudo apt install httpie
+
+$ http GET localhost:8080/java/api/v1/status
+HTTP/1.1 200 
+Content-Type: application/json;charset=UTF-8
+Date: Tue, 23 Apr 2024 22:44:48 GMT
+Transfer-Encoding: chunked
+
+{
+    "postgresVersion": "PostgreSQL 15.6 (Debian 15.6-1.pgdg120+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit",
+    "status": "UP"
+}
+
+$ http GET localhost:8080/java/api/v1/node
+HTTP/1.1 200 
+Content-Type: application/json;charset=UTF-8
+Date: Tue, 23 Apr 2024 22:44:59 GMT
+Transfer-Encoding: chunked
+
+{
+    "data": "Hello world from node app"
+}
