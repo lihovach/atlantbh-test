@@ -1,56 +1,51 @@
-# Building Docker Images
+# Running Docker Compose
 
-This section details how to build Docker images for your Node.js (`node-app`) and Spring Boot (`spring-boot-app`) applications using Docker Buildx.
+This markdown file provides instructions for running a Docker Compose file that sets up a Java API service and a Node.js application. Follow these steps to get started:
 
 ## Prerequisites:
 
-- Docker: Installed and running. Verify with `docker --version` in your terminal.
-- Docker Buildx: Enabled. Follow the official Docker documentation ([Docker Buildx documentation](https://docs.docker.com/reference/cli/docker/buildx/)) for instructions.
+    Docker: Installed and running. Verify with `docker --version` in your terminal.
+    Docker Compose: Installed and configured.
 
-## Building the Node.js Application:
+## Environment Variables:
 
-1. Open your terminal and navigate to the root directory of your project where `Dockerfile.nodeapp` resides.
-
-2. Run the following command to build the Docker image for your Node.js application, tagging it with `node-app`:
-
-    ```bash
-    docker buildx build -t node-app -f Dockerfile.nodeapp .
-    ```
-
-    - `docker buildx build`: Instructs Docker Buildx to perform the build.
-    - `-t node-app`: Tags the image with the name `node-app` (customize if needed).
-    - `-f Dockerfile.nodeapp`: Specifies the Dockerfile to use for the build.
-    - `.`: Refers to the current working directory.
-
-## Building the Spring Boot Application:
-
-1. Navigate to the root directory where `Dockerfile.springboot` is located.
-
-2. Run the following command to build the Docker image for your Spring Boot application, tagging it with `spring-boot-app`:
-
-    ```bash
-    docker buildx build -t spring-boot-app -f Dockerfile.springboot .
-    ```
-
-    The options have the same meaning as in the Node.js build command.
-
-## Verification:
-
-After running the build commands, use the following command to verify that the images have been created:
+Before running the Docker Compose file, ensure the following environment variables are set:
 
 ```bash
-
-
-docker image ls
-
 
 export DB_PASSWORD=test
 export DB_USER=test
 export DB_NAME=test
 
-$ sudo apt install httpie
+```
+## VInstallation of HTTPie:
 
-$ http GET localhost:8080/java/api/v1/status
+If not already installed, install HTTPie using the following command:
+
+```bash
+sudo apt install httpie
+```
+
+## Running Docker Compose:
+
+Navigate to the directory containing your Docker Compose file.
+Run the following command to start the services defined in the Docker Compose file:
+
+```bash
+docker-compose up -d
+```
+This command will launch the containers in detached mode.
+
+## Verification:
+
+After the containers have started, you can verify that the services are running correctly using HTTPie. Run the following commands:
+
+```bash
+http GET localhost:8080/java/api/v1/status
+```
+Expected Output:
+
+```bash
 HTTP/1.1 200 
 Content-Type: application/json;charset=UTF-8
 Date: Tue, 23 Apr 2024 22:44:48 GMT
@@ -60,8 +55,14 @@ Transfer-Encoding: chunked
     "postgresVersion": "PostgreSQL 15.6 (Debian 15.6-1.pgdg120+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit",
     "status": "UP"
 }
+```
 
-$ http GET localhost:8080/java/api/v1/node
+```bash
+http GET localhost:8080/java/api/v1/node
+```
+Expected Output:
+
+```bash
 HTTP/1.1 200 
 Content-Type: application/json;charset=UTF-8
 Date: Tue, 23 Apr 2024 22:44:59 GMT
@@ -70,3 +71,5 @@ Transfer-Encoding: chunked
 {
     "data": "Hello world from node app"
 }
+```
+If you see the expected output for both commands, the Docker Compose setup is working correctly.
